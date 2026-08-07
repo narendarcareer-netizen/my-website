@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Brightside Studio helps small businesses build thoughtful, modern digital experiences.">
+  <title>Brightside Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar container" aria-label="Main navigation">
+      <a class="logo" href="#home" aria-label="Brightside Studio home">
+        <span class="logo-mark">B</span>
+        <span>Brightside</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+        <a class="nav-cta" href="#contact">Let’s talk</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-glow hero-glow-one"></div>
+      <div class="hero-glow hero-glow-two"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span></span> Creative digital studio</p>
+          <h1>Big ideas, made <em>beautifully simple.</em></h1>
+          <p class="hero-text">We help ambitious businesses turn thoughtful ideas into memorable brands and digital experiences that feel effortless.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#contact">Start a project <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="#services">Explore our services <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-proof">
+            <div class="avatars" aria-hidden="true"><span>A</span><span>M</span><span>J</span></div>
+            <p><strong>Trusted by 40+ teams</strong><br>to bring their ideas to life.</p>
+          </div>
+        </div>
+        <div class="hero-visual reveal" aria-label="Abstract creative composition">
+          <div class="visual-card card-main">
+            <div class="card-top"><span>New perspective</span><span>↗</span></div>
+            <div class="orb"><div class="orb-inner"></div></div>
+            <div class="card-bottom"><span>Ideas that<br>move people.</span><span>01</span></div>
+          </div>
+          <div class="floating-pill pill-one">Strategy first</div>
+          <div class="floating-pill pill-two">Built to connect ✦</div>
+          <div class="spark spark-one">✦</div>
+          <div class="spark spark-two">✦</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about section" id="about">
+      <div class="container about-grid">
+        <div class="section-heading reveal">
+          <p class="eyebrow"><span></span> About us</p>
+          <h2>Small studio.<br><em>Bright thinking.</em></h2>
+        </div>
+        <div class="about-content reveal">
+          <p class="lead">We believe the best work begins with curiosity and ends with clarity.</p>
+          <p>Brightside is an independent creative studio partnering with people who care about what they put into the world. We blend strategy, design, and technology to make brands easier to understand—and harder to forget.</p>
+          <div class="stats">
+            <div><strong>8+</strong><span>Years creating</span></div>
+            <div><strong>60</strong><span>Projects launched</span></div>
+            <div><strong>12</strong><span>Industry awards</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="services section" id="services">
+      <div class="container">
+        <div class="services-intro reveal">
+          <div><p class="eyebrow light"><span></span> What we do</p><h2>Everything you need<br>to <em>stand out.</em></h2></div>
+          <p>From the first sketch to the final launch, we create cohesive experiences across every touchpoint.</p>
+        </div>
+        <div class="service-grid">
+          <article class="service-card reveal">
+            <span class="service-number">01</span><div class="service-icon">◎</div>
+            <h3>Brand Strategy</h3><p>Positioning, personality, and a clear plan that gives your brand a meaningful place in the world.</p>
+            <ul><li>Research & insights</li><li>Brand positioning</li><li>Voice & messaging</li></ul>
+          </article>
+          <article class="service-card featured reveal">
+            <span class="service-number">02</span><div class="service-icon">✦</div>
+            <h3>Visual Identity</h3><p>A distinctive visual language that feels unmistakably you, built to grow alongside your business.</p>
+            <ul><li>Logo systems</li><li>Art direction</li><li>Brand guidelines</li></ul>
+          </article>
+          <article class="service-card reveal">
+            <span class="service-number">03</span><div class="service-icon">⌁</div>
+            <h3>Digital Design</h3><p>Intuitive, responsive websites that make every interaction feel considered and genuinely human.</p>
+            <ul><li>UX & UI design</li><li>Web development</li><li>Creative direction</li></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact section" id="contact">
+      <div class="container contact-grid">
+        <div class="contact-copy reveal">
+          <p class="eyebrow"><span></span> Get in touch</p>
+          <h2>Have an idea?<br>Let’s make it <em>shine.</em></h2>
+          <p>Tell us a little about what you’re working on. We’ll get back to you within two business days.</p>
+          <a href="mailto:hello@brightside.studio">hello@brightside.studio <span>↗</span></a>
+        </div>
+        <form class="contact-form reveal" id="contact-form" novalidate>
+          <div class="field-row">
+            <label>Your name<input type="text" name="name" placeholder="Jane Smith" required></label>
+            <label>Email address<input type="email" name="email" placeholder="jane@company.com" required></label>
+          </div>
+          <label>What can we help with?
+            <select name="service" required><option value="" selected disabled>Select a service</option><option>Brand Strategy</option><option>Visual Identity</option><option>Digital Design</option><option>Something else</option></select>
+          </label>
+          <label>Tell us about your project<textarea name="message" rows="4" placeholder="A few details about your idea, goals, and timeline..." required></textarea></label>
+          <button class="button button-primary" type="submit">Send your message <span>→</span></button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <a class="logo footer-logo" href="#home"><span class="logo-mark">B</span><span>Brightside</span></a>
+      <p>Thoughtful design for bright ideas.</p>
+      <div class="social-links"><a href="#" aria-label="Instagram">Instagram</a><a href="#" aria-label="LinkedIn">LinkedIn</a></div>
+    </div>
+    <div class="container footer-bottom"><span>© <span id="year"></span> Brightside Studio</span><span>Made with care.</span></div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
