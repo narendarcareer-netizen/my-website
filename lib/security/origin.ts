@@ -1,0 +1,1 @@
+import"server-only";import{appUrl}from"@/lib/config/app-url";export function validOrigin(request:Request){const origin=request.headers.get("origin");if(!origin)return false;try{return new URL(origin).origin===appUrl()}catch{return false}}

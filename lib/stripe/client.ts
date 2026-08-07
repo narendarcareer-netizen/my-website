@@ -1,0 +1,1 @@
+import"server-only";import Stripe from"stripe";let instance:Stripe|undefined;export function stripe(){const key=process.env.STRIPE_SECRET_KEY;if(!key)throw new Error("STRIPE_NOT_CONFIGURED");return instance??=new Stripe(key,{appInfo:{name:"JobPilot",version:"0.1.0"}})}

@@ -1,0 +1,1 @@
+import{scanSource}from"../jobs/scan-source";const value=process.argv.find(v=>v.startsWith("--source="))?.split("=")[1];if(!value)throw new Error("Usage: npm run scan -- --source=<uuid>");console.log(await scanSource(value));

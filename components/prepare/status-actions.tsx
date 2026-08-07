@@ -1,0 +1,5 @@
+import { updateDraftStatus } from "@/lib/actions/ai-documents";
+
+export function StatusActions({ draftId, jobId, status }: { draftId: string; jobId: string; status: string }) {
+  return <div className="flex flex-wrap items-center gap-2"><span className={`rounded-full px-2.5 py-1 text-xs font-bold uppercase ${status === "approved" ? "bg-emerald-50 text-emerald-700" : status === "rejected" ? "bg-rose-50 text-rose-700" : "bg-amber-50 text-amber-700"}`}>{status === "approved" ? "APPROVED" : status === "rejected" ? "REJECTED" : "NEEDS REVIEW"}</span><form action={updateDraftStatus}><input type="hidden" name="draftId" value={draftId} /><input type="hidden" name="jobId" value={jobId} /><button name="status" value="approved" className="rounded-lg border px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-50">Approve</button><button name="status" value="rejected" className="ml-2 rounded-lg border px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50">Reject</button></form></div>;
+}

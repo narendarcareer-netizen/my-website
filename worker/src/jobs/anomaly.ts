@@ -1,0 +1,1 @@
+export function detectAnomaly(previous:number,current:number){if(previous<10)return{anomaly:false,reason:null};const drop=(previous-current)/previous;if(current===0)return{anomaly:true,reason:"ZERO_RESULT_AFTER_NONEMPTY_SCAN"};if(drop>=.95)return{anomaly:true,reason:"JOB_COUNT_COLLAPSE"};return{anomaly:false,reason:null}}

@@ -1,0 +1,2 @@
+import assert from "node:assert/strict";import { canTransition } from "../lib/applications/status-rules";
+assert.equal(canTransition("SAVED","PREPARING"),true);assert.equal(canTransition("PREPARING","SUBMITTED"),false);assert.equal(canTransition("READY_TO_APPLY","APPLYING"),true);assert.equal(canTransition("APPLYING","SUBMITTED"),true);assert.equal(canTransition("SUBMITTED","INTERVIEW"),true);assert.equal(canTransition("REJECTED","OFFER"),false);console.log("Application pipeline transition tests passed.");

@@ -1,0 +1,14 @@
+import { expect, test } from "@playwright/test";
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { detectSubmitControl } from "../src/adapters/submit-control";
+import { validateApplication } from "../src/validation/validate-application";
+import { computeFormHash } from "../src/security/form-hash";
+import type { FormState } from "../src/types/index";
+
+const fixture=(name:string)=>readFile(fileURLToPath(new URL(`../fixtures/${name}`,import.meta.url)),"utf8");
+test("detects a high-confidence final control but not Next",async({page})=>{await page.setContent(await fixture("multi-step-greenhouse.html"));expect(await detectSubmitControl(page)).toBeNull();await page.getByRole("button",{name:"Next"}).click();expect(await (await detectSubmitControl(page))?.textContent()).toBe("Submit Application");});
+test("unknown required and CAPTCHA block validation",async({page})=>{await page.setContent(await fixture("unknown-required.html"));const base:FormState={atsType:"GENERIC",employer:"Fixture",job:"Test",fields:[{id:"x",label:"Explain quantum flux",purpose:"UNKNOWN",type:"text",required:true,filled:false,sensitive:false,confidence:.3}],requiredQuestionIds:["x"],documentVersions:{resume:"v1"},captcha:false,loginRequired:false,mfaRequired:false,visibleValidationErrors:[]};expect(validateApplication(base).ready).toBe(false);expect(validateApplication({...base,captcha:true}).errors).toContain("CAPTCHA_REQUIRED");});
+test("sensitive and generated fields require user action",()=>{const base:FormState={atsType:"GREENHOUSE",employer:"Fixture",job:"Test",fields:[{id:"race",label:"Race",purpose:"SENSITIVE",type:"select",required:true,filled:false,sensitive:true,confidence:1},{id:"why",label:"Why this role",purpose:"GENERATED_TEXT",type:"textarea",required:true,filled:true,sensitive:false,confidence:.9,approved:false}],requiredQuestionIds:["race","why"],documentVersions:{resume:"v1"},captcha:false,loginRequired:false,mfaRequired:false,visibleValidationErrors:[]};const result=validateApplication(base);expect(result.ready).toBe(false);expect(result.errors.join(" ")).toMatch(/SENSITIVE|GENERATED/);});
+test("form hash changes when a required field changes",()=>{const base:FormState={atsType:"LEVER",employer:"Fixture",job:"Test",fields:[],requiredQuestionIds:[],documentVersions:{resume:"v1"},captcha:false,loginRequired:false,mfaRequired:false,visibleValidationErrors:[]};const changed:FormState={...base,fields:[{id:"new",label:"New required question",purpose:"UNKNOWN",type:"text",required:true,filled:false,sensitive:false,confidence:.3}],requiredQuestionIds:["new"]};expect(computeFormHash(base)).not.toBe(computeFormHash(changed));});
+test("fixtures contain no automatic submit script",async()=>{for(const name of ["simple-greenhouse.html","lever.html","captcha.html","unknown-required.html","confirmation.html"]){expect((await fixture(name))).not.toMatch(/\.submit\(|requestSubmit\(/);}});

@@ -1,0 +1,2 @@
+import { ListPlus } from "lucide-react";import { addToApplicationQueue } from "@/lib/actions/applications";
+export function QueueButton({jobId,applicationId}:{jobId:string;applicationId?:string}){if(applicationId)return <a href={`/applications/${applicationId}`} className="button-secondary w-full">View application</a>;return <form action={addToApplicationQueue}><input type="hidden" name="jobId" value={jobId}/><button className="button-secondary w-full"><ListPlus className="size-4"/>Add to application queue</button></form>}

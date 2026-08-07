@@ -1,0 +1,2 @@
+import{describe,it,expect}from"vitest";import{readFileSync}from"node:fs";import{resolve}from"node:path";
+describe("manual submission guarantee",()=>{it("contains no programmatic form submission",()=>{const source=readFileSync(resolve(__dirname,"../src/content/index.ts"),"utf8");expect(source).not.toMatch(/\.submit\s*\(|requestSubmit\s*\(|\[type=["']submit/);expect(source).not.toMatch(/\.click\s*\(\)/)})});

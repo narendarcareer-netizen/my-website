@@ -1,0 +1,9 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+.env.local
+.server.pid
+npm-debug.log*
+*.tsbuildinfo

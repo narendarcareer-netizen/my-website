@@ -1,0 +1,6 @@
+import Link from "next/link";
+import { Check } from "lucide-react";
+
+export function PricingCard({ name, price, description, features, featured = false }: { name: string; price: string; description: string; features: string[]; featured?: boolean }) {
+  return <div className={`relative rounded-3xl border p-7 ${featured ? "border-accent-600 bg-ink text-white shadow-soft" : "border-zinc-200 bg-white"}`}>{featured && <span className="absolute right-6 top-6 rounded-full bg-accent-600 px-3 py-1 text-[10px] font-bold uppercase tracking-widest">Most popular</span>}<p className={`text-sm font-semibold ${featured ? "text-zinc-300" : "text-zinc-500"}`}>{name}</p><div className="mt-5 flex items-end gap-1"><span className="text-4xl font-semibold tracking-tight">{price}</span>{price !== "$0" && <span className={`pb-1 text-sm ${featured ? "text-zinc-400" : "text-zinc-500"}`}>/ month</span>}</div><p className={`mt-4 text-sm leading-6 ${featured ? "text-zinc-400" : "text-zinc-500"}`}>{description}</p><ul className="my-7 space-y-3">{features.map(feature => <li key={feature} className="flex items-center gap-3 text-sm"><Check className={`size-4 ${featured ? "text-accent-500" : "text-accent-600"}`} />{feature}</li>)}</ul><Link href="/dashboard" className={featured ? "button-primary w-full" : "button-secondary w-full"}>Get started</Link></div>;
+}

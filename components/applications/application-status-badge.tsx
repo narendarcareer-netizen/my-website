@@ -1,0 +1,6 @@
+"use client";
+import { usePathname } from "next/navigation";
+import type { ApplicationStatus } from "@/lib/applications/types";
+import { AssistedApplyButton } from "./assisted-apply-button";
+const tones:Record<ApplicationStatus,string>={SAVED:"bg-zinc-100 text-zinc-700",PREPARING:"bg-amber-50 text-amber-700",NEEDS_REVIEW:"bg-orange-50 text-orange-700",READY_TO_APPLY:"bg-emerald-50 text-emerald-700",APPLYING:"bg-blue-50 text-blue-700",NEEDS_USER_ACTION:"bg-rose-50 text-rose-700",SUBMITTED:"bg-indigo-50 text-indigo-700",INTERVIEW:"bg-purple-50 text-purple-700",REJECTED:"bg-rose-50 text-rose-700",OFFER:"bg-emerald-100 text-emerald-800",WITHDRAWN:"bg-zinc-100 text-zinc-600",FAILED:"bg-red-50 text-red-700",ARCHIVED:"bg-zinc-100 text-zinc-500"};
+export function ApplicationStatusBadge({status}:{status:ApplicationStatus}){const pathname=usePathname();const detail=/^\/applications\/[0-9a-f-]{36}$/i.test(pathname);const id=detail?pathname.split("/")[2]:null;return <div className="space-y-2"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${tones[status]}`}>{status.replaceAll("_"," ")}</span>{status==="READY_TO_APPLY"&&id&&<AssistedApplyButton applicationId={id}/>}</div>}

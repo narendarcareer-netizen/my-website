@@ -1,0 +1,1 @@
+import"server-only";export function appUrl(){const value=process.env.APP_URL??process.env.NEXT_PUBLIC_SITE_URL;if(!value)throw new Error("APP_URL_NOT_CONFIGURED");return new URL(value).origin}export function safeReturnUrl(path="/"){const base=appUrl();return new URL(path.startsWith("/")?path:"/",base).toString()}

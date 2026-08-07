@@ -1,0 +1,5 @@
+export type AtsType="GREENHOUSE"|"LEVER"|"GENERIC";export type FieldPurpose="FIRST_NAME"|"LAST_NAME"|"FULL_NAME"|"EMAIL"|"PHONE"|"LOCATION"|"LINKEDIN"|"PORTFOLIO"|"RESUME_UPLOAD"|"COVER_LETTER_UPLOAD"|"WORK_AUTHORIZATION"|"SPONSORSHIP"|"SALARY_EXPECTATION"|"START_DATE"|"RELOCATION"|"CUSTOM_TEXT"|"UNKNOWN";
+export interface DetectedField{id:string;label:string;name:string;type:string;required:boolean;options:string[];section:string;sensitive:boolean;detectedPurpose:FieldPurpose;confidence:number;selector:string}
+export interface AtsDetection{atsType:AtsType;confidence:number;supported:boolean}
+export interface SessionState{token:string;apiBase:string;applicationId:string;expiresAt:number}
+export interface ApplicationData{application:{id:string;status:string;applyUrl:string;job:{id:string;title:string;companies:{name:string}}};profile:Record<string,string|null>;answers:Array<{question_key:string;question_text:string;answer:string|null;is_sensitive:boolean}>;documents:{resume:boolean;coverLetter:boolean;versions:{resume:string;coverLetter:string|null}}}

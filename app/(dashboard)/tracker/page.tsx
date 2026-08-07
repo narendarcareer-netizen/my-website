@@ -1,0 +1,14 @@
+import Link from "next/link";
+import { DashboardHeader } from "@/components/dashboard-header";
+import { ApplicationStatusBadge } from "@/components/applications/application-status-badge";
+import { updateApplicationStatus } from "@/lib/actions/applications";
+import { ALLOWED_TRANSITIONS } from "@/lib/applications/status-rules";
+import { createClient } from "@/lib/supabase/server";
+import type { ApplicationStatus } from "@/lib/applications/types";
+
+interface Row{id:string;status:ApplicationStatus;match_score:number|null;jobs:{title:string;companies:{name:string}}}
+const columns=[{title:"Preparing",statuses:["SAVED","PREPARING","NEEDS_REVIEW","NEEDS_USER_ACTION"]},{title:"Ready",statuses:["READY_TO_APPLY"]},{title:"Applying",statuses:["APPLYING","FAILED"]},{title:"Submitted",statuses:["SUBMITTED"]},{title:"Interview",statuses:["INTERVIEW"]},{title:"Rejected",statuses:["REJECTED"]},{title:"Offer",statuses:["OFFER"]}] as const;
+export default async function TrackerPage(){
+ const db=await createClient(); const {data}=await db.from("applications").select("id,status,match_score,jobs!inner(title,companies!inner(name))").neq("status","ARCHIVED").order("last_activity_at",{ascending:false}); const rows=(data??[]) as unknown as Row[];
+ return <><DashboardHeader title="Application tracker" subtitle="Move opportunities through validated pipeline stages."/><main className="overflow-x-auto p-5 sm:p-8"><div className="grid min-w-[1450px] grid-cols-7 gap-4">{columns.map(col=>{const items=rows.filter(r=>(col.statuses as readonly string[]).includes(r.status));return <section key={col.title}><div className="mb-3 flex justify-between px-1"><h2 className="text-sm font-semibold">{col.title}</h2><span className="text-xs text-zinc-400">{items.length}</span></div><div className="min-h-[520px] space-y-3 rounded-2xl bg-zinc-100/70 p-3">{items.map(app=><article key={app.id} className="rounded-xl border bg-white p-4 shadow-sm"><p className="text-xs text-zinc-500">{app.jobs.companies.name}</p><Link href={`/applications/${app.id}`} className="mt-2 block text-sm font-semibold hover:text-accent-700">{app.jobs.title}</Link><div className="mt-3"><ApplicationStatusBadge status={app.status}/></div><p className="mt-3 text-xs font-semibold text-accent-700">{app.match_score??"--"}% match</p>{ALLOWED_TRANSITIONS[app.status].length>0&&<form action={updateApplicationStatus} className="mt-3"><input type="hidden" name="applicationId" value={app.id}/><select name="status" defaultValue="" required className="w-full rounded-lg border p-2 text-xs"><option value="" disabled>Next status...</option>{ALLOWED_TRANSITIONS[app.status].map(s=><option key={s} value={s}>{s.replaceAll("_"," ")}</option>)}</select><button className="mt-2 w-full text-xs font-semibold text-accent-700">Confirm move</button></form>}</article>)}</div></section>})}</div></main></>;
+}

@@ -1,0 +1,12 @@
+import { NextResponse } from "next/server";
+import { authenticateExtension,extensionCors } from "@/lib/extension/session";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { generateResumePdf,generateTextDocumentPdf } from "@/lib/documents/generate-resume-pdf";
+import { resumeAnalysisSchema } from "@/lib/ai/types";
+export async function OPTIONS(r:Request){return new NextResponse(null,{status:204,headers:extensionCors(r)});}
+export async function GET(r:Request,{params}:{params:Promise<{type:string}>}){
+ const s=await authenticateExtension(r);if(!s)return NextResponse.json({error:"Session expired"},{status:401,headers:extensionCors(r)});const {type}=await params;if(type!=="resume"&&type!=="cover-letter")return NextResponse.json({error:"Unknown document"},{status:404,headers:extensionCors(r)});const versionId=type==="resume"?s.resume_version_id:s.cover_letter_version_id;if(!versionId)return NextResponse.json({error:"Document unavailable"},{status:404,headers:extensionCors(r)});
+ const db=createAdminClient();const {data:version}=await db.from("document_versions").select("id,content,job_document_drafts!inner(id,user_id,resume_id,document_type,status)").eq("id",versionId).maybeSingle();if(!version)return NextResponse.json({error:"Version unavailable"},{status:404,headers:extensionCors(r)});const draft=version.job_document_drafts as unknown as {id:string;user_id:string;resume_id:string;document_type:string;status:string};if(draft.user_id!==s.user_id||draft.status!=="approved")return NextResponse.json({error:"Forbidden"},{status:403,headers:extensionCors(r)});
+ let pdf:Buffer;if(type==="cover-letter")pdf=await generateTextDocumentPdf("Cover Letter",(version.content as {text?:string}).text??"");else{const {data:analysis}=await db.from("resume_analyses").select("structured_data").eq("resume_id",draft.resume_id).eq("user_id",s.user_id).maybeSingle();if(!analysis)return NextResponse.json({error:"Analysis unavailable"},{status:404,headers:extensionCors(r)});const parsed=resumeAnalysisSchema.parse(analysis.structured_data);const edits=((version.content as {suggestedEdits?:unknown[]}).suggestedEdits??[]) as Array<{original:string;suggested:string;manualText?:string|null;decision:string}>;pdf=await generateResumePdf(parsed,edits);}
+ return new NextResponse(new Uint8Array(pdf),{headers:{...extensionCors(r),"Content-Type":"application/pdf","Content-Disposition":`attachment; filename="jobpilot-${type}.pdf"`,"Cache-Control":"private, no-store"}});
+}

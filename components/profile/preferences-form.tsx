@@ -1,0 +1,13 @@
+"use client";
+
+import { useActionState } from "react";
+import { updateJobPreferences } from "@/lib/actions/profile";
+import { FormStatus } from "./form-status";
+
+type Preferences = { preferred_titles: string[] | null; preferred_locations: string[] | null; remote_preference: string | null; employment_types: string[] | null; minimum_salary: number | null; salary_currency: string | null; industries: string[] | null } | null;
+
+export function PreferencesForm({ preferences }: { preferences: Preferences }) {
+  const [state, action, pending] = useActionState(updateJobPreferences, {});
+  const field = "mt-2 w-full rounded-xl border bg-zinc-50 px-4 py-3 text-sm outline-none focus:border-accent-500 focus:ring-2 focus:ring-accent-100";
+  return <form action={action} className="card p-6 sm:p-8"><h2 className="text-lg font-semibold">Job preferences</h2><p className="mt-1 text-sm text-zinc-500">Separate multiple choices with commas.</p><div className="mt-7 grid gap-5 sm:grid-cols-2"><label className="text-sm font-medium sm:col-span-2">Preferred titles<input className={field} name="preferred_titles" placeholder="Product Designer, UX Designer" defaultValue={preferences?.preferred_titles?.join(", ") ?? ""} /></label><label className="text-sm font-medium">Preferred locations<input className={field} name="preferred_locations" placeholder="New York, Remote" defaultValue={preferences?.preferred_locations?.join(", ") ?? ""} /></label><label className="text-sm font-medium">Remote preference<select className={field} name="remote_preference" defaultValue={preferences?.remote_preference ?? "Flexible"}>{["Flexible", "Remote", "Hybrid", "On-site"].map(value => <option key={value}>{value}</option>)}</select></label><label className="text-sm font-medium">Employment types<input className={field} name="employment_types" placeholder="Full-time, Contract" defaultValue={preferences?.employment_types?.join(", ") ?? ""} /></label><label className="text-sm font-medium">Industries<input className={field} name="industries" placeholder="Technology, Healthcare" defaultValue={preferences?.industries?.join(", ") ?? ""} /></label><label className="text-sm font-medium">Minimum salary<input className={field} name="minimum_salary" type="number" min="0" defaultValue={preferences?.minimum_salary ?? 0} /></label><label className="text-sm font-medium">Currency<input className={field} name="salary_currency" defaultValue={preferences?.salary_currency ?? "USD"} minLength={3} maxLength={3} /></label></div><div className="mt-6"><FormStatus {...state} /></div><button disabled={pending} className="button-primary mt-5 disabled:opacity-60">{pending ? "Saving…" : "Save preferences"}</button></form>;
+}
