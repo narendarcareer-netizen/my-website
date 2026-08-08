@@ -1,0 +1,22 @@
+.git
+.github
+.next
+node_modules
+**/node_modules
+**/dist
+**/dist-validation
+**/test-results
+**/playwright-report
+
+# Never send local configuration or secrets to the Docker daemon.
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+
+# The worker image does not need browser/app build artifacts.
+extension
+automation
+tmp
+npm-debug.log*
