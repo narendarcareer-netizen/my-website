@@ -16,7 +16,8 @@
     "jobs:scan": "npm --prefix worker run scan --",
     "jobs:load-test": "npm --prefix worker run load-test",
     "jobs:seed": "npm --prefix worker run seed-jobs --"
-    ,"test:production-safety": "npm --prefix automation test -- production-safety.spec.ts"
+    ,"test:production-safety": "npm --prefix automation test -- production-safety.spec.ts",
+    "test:staging-load": "tsx scripts/staging-load-test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.16.0",
