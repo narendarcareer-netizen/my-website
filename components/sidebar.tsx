@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Search, Send, Columns3, UserRound, Settings, HelpCircle, LogOut, Bell } from "lucide-react";
+import { LayoutDashboard, Search, Send, Columns3, UserRound, Settings, HelpCircle, LogOut, Bell, Mail } from "lucide-react";
 import { Logo } from "./logo";
 
-const links = [{ label: "Overview", href: "/dashboard", icon: LayoutDashboard }, { label: "Find jobs", href: "/jobs", icon: Search }, { label: "Applications", href: "/applications", icon: Send }, { label: "Tracker", href: "/tracker", icon: Columns3 }, { label: "Notifications", href: "/notifications", icon: Bell }, { label: "Profile", href: "/profile", icon: UserRound }, { label: "Settings", href: "/settings", icon: Settings }];
+const links = [{ label: "Overview", href: "/dashboard", icon: LayoutDashboard }, { label: "Find jobs", href: "/jobs", icon: Search }, { label: "Applications", href: "/applications", icon: Send }, { label: "Tracker", href: "/tracker", icon: Columns3 }, { label: "Inbox", href: "/inbox", icon: Mail }, { label: "Notifications", href: "/notifications", icon: Bell }, { label: "Profile", href: "/profile", icon: UserRound }, { label: "Settings", href: "/settings", icon: Settings }];
 
 export function Sidebar({ mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();

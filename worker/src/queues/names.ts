@@ -1,1 +1,1 @@
-export const queueNames={detect:"DETECT_SOURCE",scan:"SCAN_SOURCE",normalize:"NORMALIZE_JOBS",upsert:"UPSERT_JOBS",close:"CLOSE_MISSING_JOBS",matches:"RECALCULATE_MATCHES",health:"HEALTH_CHECK"}as const;
+export const queueNames={detect:"DETECT_SOURCE",scan:"SCAN_SOURCE",normalize:"NORMALIZE_JOBS",upsert:"UPSERT_JOBS",close:"CLOSE_MISSING_JOBS",matches:"RECALCULATE_MATCHES",health:"HEALTH_CHECK",emailSync:"SYNC_EMAIL_CONNECTION",emailProcess:"PROCESS_EMAIL_MESSAGE",emailMatch:"MATCH_EMAIL_TO_APPLICATION"}as const;

@@ -21,6 +21,9 @@ export default async function AdminOverview() {
     { data: sources },
     { data: alerts },
     { data: flags },
+    { count: emailConnections },
+    { count: emailFailures },
+    { count: emailMessages },
   ] = await Promise.all([
     db.from("profiles").select("id", { count: "exact", head: true }),
     db.from("subscriptions").select("id", { count: "exact", head: true }).in("status", ["active", "trialing"]),
@@ -31,6 +34,9 @@ export default async function AdminOverview() {
     db.from("career_sources").select("health_status"),
     db.from("ingestion_alerts").select("id,title,severity").is("resolved_at", null).limit(20),
     db.from("feature_flags").select("key,enabled,description").order("key"),
+    db.from("email_connections").select("id", { count: "exact", head: true }).eq("status", "ACTIVE"),
+    db.from("email_sync_runs").select("id", { count: "exact", head: true }).eq("status", "FAILED").gte("started_at", day),
+    db.from("application_email_events").select("id", { count: "exact", head: true }).gte("created_at", day),
   ]);
   const healthyWorkers = workers?.filter((worker) => worker.last_heartbeat_at >= heartbeatCutoff).length ?? 0;
   const cards = [
@@ -42,6 +48,9 @@ export default async function AdminOverview() {
     ["Onboarding backlog", backlog ?? 0],
     ["Failing ATS sources", sources?.filter((source) => source.health_status === "FAILING").length ?? 0],
     ["Open alerts", alerts?.length ?? 0],
+    ["Active mailboxes", emailConnections ?? 0],
+    ["Email sync failures (24h)", emailFailures ?? 0],
+    ["Job emails processed (24h)", emailMessages ?? 0],
   ];
 
   return (

@@ -1,0 +1,8 @@
+import { NextResponse } from "next/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { consumeOAuthState,emailRedirectUri } from "@/lib/email/oauth";
+import { emailProvider } from "@/lib/email/providers";
+import type { EmailProvider } from "@/lib/email/providers/types";
+import { encryptToken } from "@/lib/email/token-crypto";
+const providerValue=(value:string):EmailProvider|null=>value==="gmail"?"GMAIL":value==="microsoft"?"MICROSOFT":null;
+export async function GET(request:Request,{params}:{params:Promise<{provider:string}>}){const provider=providerValue((await params).provider),url=new URL(request.url),state=url.searchParams.get("state"),code=url.searchParams.get("code");const destination=new URL("/settings/integrations/email",request.url);if(!provider||!state||!code){destination.searchParams.set("error","oauth");return NextResponse.redirect(destination)}try{const userId=await consumeOAuthState(state,provider),client=emailProvider(provider),tokens=await client.connect(code,emailRedirectUri(provider)),account=await client.getAccount(tokens.accessToken),db=createAdminClient();const{error}=await db.from("email_connections").upsert({user_id:userId,provider,provider_account_id:account.id,email_address:account.email,encrypted_access_token:encryptToken(tokens.accessToken),encrypted_refresh_token:tokens.refreshToken?encryptToken(tokens.refreshToken):null,token_expires_at:tokens.expiresAt,scopes:tokens.scopes,status:"ACTIVE",connected_at:new Date().toISOString(),last_error_code:null},{onConflict:"user_id,provider,provider_account_id"});if(error)throw error;destination.searchParams.set("connected",provider.toLowerCase())}catch{destination.searchParams.set("error","oauth")}return NextResponse.redirect(destination)}
